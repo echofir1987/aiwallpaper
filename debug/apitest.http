@@ -1,0 +1,12 @@
+@baseUrl = http://localhost:3000/api
+
+### 生成壁纸
+POST {{baseUrl}}/gen-wallpaper
+content-type: application/json
+
+{
+    "description": "a spiderman on the moon"
+}
+
+### 获取壁纸
+GET {{baseUrl}}/get-wallpaper
