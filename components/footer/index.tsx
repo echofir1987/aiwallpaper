@@ -1,7 +1,6 @@
-export default function () {
+const Footer = () => {
     return (
         <div>
-            
             <footer className="block">
                 <div className="py-16 md:py-20 mx-auto w-full max-w-7xl px-5 md:px-10">
                     <div className="sm:flex-row flex justify-between flex-col">
@@ -22,3 +21,5 @@ export default function () {
         </div>
     )
 }
+Footer.displayName = "Footer";
+export default Footer;

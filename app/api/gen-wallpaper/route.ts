@@ -3,9 +3,7 @@ import { downloadAndUploadImage } from '@/lib/s3';
 import { ImageGenerateParams } from 'openai/resources/images';
 import { Wallpaper } from '@/types/wallpaper';
 import { insertWallpaper } from '@/models/wallpaper';
-import { auth, currentUser } from '@clerk/nextjs/server';
-import { insertUser } from '@/models/user';
-import { User } from '@/types/user';
+import { currentUser } from '@clerk/nextjs/server';
 
 export async function POST(request: Request) {
     const { description } = await request.json();
@@ -18,21 +16,8 @@ export async function POST(request: Request) {
         })
     }
     
-      const user_email = user.emailAddresses[0].emailAddress;
+    const user_email = user.emailAddresses[0].emailAddress;
     
-      const nickname = user.firstName;
-      const avatarUrl = user.imageUrl;
-      const userInfo: User = {
-        email: user_email,
-        nickname: nickname || "",
-        avatar_url: avatarUrl,
-    };
-    // await insertUser(userInfo);
-    
-    // return Response.json({
-    //     user: userInfo
-    // });
-
     console.log("description", description);
 
     const client = getOpenAIClient();

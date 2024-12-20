@@ -1,8 +1,10 @@
 "use client"
 
+import * as React from "react"
+import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useState, useEffect, Dispatch, SetStateAction } from "react"
+import { useState, Dispatch, SetStateAction } from "react"
 import { Wallpaper } from "@/types/wallpaper";
 import { useUser } from "@clerk/nextjs";
 
@@ -33,8 +35,8 @@ export default function ({ setWallpapers }: Props) {
             console.log("new wallpaper", data);
             const wallpaperWithUser = {
                 ...data.data,
-                user_avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix",  // 使用默认头像
-                user_nickname: "AI创作者"  // 使用默认昵称
+                user_avatar: user?.imageUrl,  
+                user_nickname: user?.username
             };
             setWallpapers((wallpapers: Wallpaper[]) => [wallpaperWithUser, ...wallpapers]);
         }
