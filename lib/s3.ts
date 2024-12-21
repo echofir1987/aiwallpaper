@@ -1,14 +1,16 @@
-import AWS from "aws-sdk";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { Upload } from "@aws-sdk/lib-storage";
 import { Readable } from "stream";
 import axios from "axios";
 import fs from "fs";
 
-AWS.config.update({
-  accessKeyId: process.env.AWS_AK,
-  secretAccessKey: process.env.AWS_SK,
+const s3 = new S3Client({
+  credentials: {
+    accessKeyId: process.env.AWS_AK || '',
+    secretAccessKey: process.env.AWS_SK || '',
+  },
+  region: process.env.AWS_REGION || ''
 });
-
-const s3 = new AWS.S3();
 
 export async function downloadAndUploadImage(
   imageUrl: string,
@@ -22,13 +24,16 @@ export async function downloadAndUploadImage(
       responseType: "stream",
     });
 
-    const uploadParams = {
-      Bucket: bucketName,
-      Key: s3Key,
-      Body: response.data as Readable,
-    };
+    const upload = new Upload({
+      client: s3,
+      params: {
+        Bucket: bucketName,
+        Key: s3Key,
+        Body: response.data,
+      },
+    });
 
-    return s3.upload(uploadParams).promise();
+    return upload.done();
   } catch (e) {
     console.log("upload failed:", e);
     throw e;

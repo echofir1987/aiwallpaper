@@ -3,23 +3,29 @@ import { downloadAndUploadImage } from '@/lib/s3';
 import { ImageGenerateParams } from 'openai/resources/images';
 import { Wallpaper } from '@/types/wallpaper';
 import { insertWallpaper } from '@/models/wallpaper';
-import { currentUser } from '@clerk/nextjs/server';
+import { currentUser } from "@clerk/nextjs";
+import { User } from "@/types/user";
+import { saveUser } from "@/service/user";
 
 export async function POST(request: Request) {
     const { description } = await request.json();
-
-    const user = await currentUser();
-    if (!user || !user.emailAddresses || user.emailAddresses.length === 0) {
+    if(!description) {
+        return Response.json({
+            code: -1,
+            message: "description is required",
+        });
+    }
+    console.log("description", description);
+    
+    const user  = await currentUser();
+    if (!user) {
         return Response.json({
           code: -2,
           message: "user not login",
-        })
+        });
     }
+    console.log("user", user);
     
-    const user_email = user.emailAddresses[0].emailAddress;
-    
-    console.log("description", description);
-
     const client = getOpenAIClient();
 
     const img_size = "1792x1024";
@@ -43,21 +49,35 @@ export async function POST(request: Request) {
         });
     }
 
-    const img_name = `wallpaper-${Date.now()}`; // 使用时间戳作为文件名
-    const s3_img = await downloadAndUploadImage(
+    const img_name = `wallpaper-${Date.now()}`;
+    const s3Key = `wallpapers/${img_name}.png`;
+    await downloadAndUploadImage(
         rawImageUrl, 
         process.env.AWS_BUCKET || "aiwallpapers",
-        `wallpapers/${img_name}.png`
+        s3Key
     );
-    const img_url = s3_img.Location;
+    
+    // 手动构建 S3 URL
+    const img_url = `https://${process.env.AWS_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Key}`;
 
     console.log('gen wallpaper success', img_url);
+
+    const user_email = user.emailAddresses[0].emailAddress;
+    const user_avatar = user.imageUrl;
+    const user_nickname = user.firstName;
+    const userInfo: User = {
+        email: user_email,
+        avatar_url: user_avatar,
+        nickname: user_nickname || '',
+    };
+
+    await saveUser(userInfo);
 
     const wallpaper: Wallpaper = {
         user_email: user_email,
         img_description: description,
         img_size: img_size,
-        img_url: img_url,
+        img_url: img_url || '',
         llm_name: llm_name,
         llm_params: JSON.stringify(llm_params),
         created_at: new Date().toISOString(),

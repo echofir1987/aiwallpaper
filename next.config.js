@@ -8,6 +8,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'aiwallpaper.s3.us-east-1.amazonaws.com'
+      },
+      {
+        protocol: 'https',
         hostname: 'oaidalleapiprodscus.blob.core.windows.net'
       },
       {
