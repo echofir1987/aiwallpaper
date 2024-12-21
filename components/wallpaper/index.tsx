@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Button } from "@/components/ui/button";
 import type { Wallpaper } from "@/types/wallpaper";
 import Image from 'next/image';
@@ -21,14 +22,14 @@ export default function Wallpaper({ wallpapers }: Props) {
               <div className="flex items-center">
                 <Image
                   key={`avatar-${wallpaper.id}`}
-                  src={wallpaper.user_avatar || '/default-avatar.png'}
-                  alt={`${wallpaper.user_nickname} 的头像`}
+                  src={wallpaper.created_user?.avatar_url || '/default-avatar.png'}
+                  alt={`${wallpaper.created_user?.nickname} 的头像`}
                   width={32}
                   height={32}
                   className="mr-4 inline-block h-8 w-8 rounded-full"
                 />
                 <h6 className="text-base font-bold">
-                  {wallpaper.user_nickname}
+                  {wallpaper.img_description}
                 </h6>
               </div>
               <a
@@ -42,7 +43,7 @@ export default function Wallpaper({ wallpapers }: Props) {
             <Image 
               key={`wallpaper-img-${wallpaper.id}`}
               src={wallpaper.img_url}
-              alt=""
+              alt={''}
               width={1792}
               height={1024}
               priority={false}
