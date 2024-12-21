@@ -43,7 +43,7 @@ export async function POST(request: Request) {
         });
     }
 
-    const img_name = encodeURIComponent(description);
+    const img_name = `wallpaper-${Date.now()}`; // 使用时间戳作为文件名
     const s3_img = await downloadAndUploadImage(
         rawImageUrl, 
         process.env.AWS_BUCKET || "aiwallpapers",

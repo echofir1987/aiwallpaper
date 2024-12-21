@@ -5,6 +5,14 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'aiwallpaper.s3.amazonaws.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'oaidalleapiprodscus.blob.core.windows.net'
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.clerk.com'
       }
     ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],

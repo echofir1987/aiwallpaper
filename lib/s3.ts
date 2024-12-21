@@ -1,57 +1,67 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { fetch } from 'cross-fetch';
+import AWS from "aws-sdk";
+import { Readable } from "stream";
+import axios from "axios";
+import fs from "fs";
 
-const s3Client = new S3Client({
-  region: process.env.AWS_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ''
-  }
+AWS.config.update({
+  accessKeyId: process.env.AWS_AK,
+  secretAccessKey: process.env.AWS_SK,
 });
+
+const s3 = new AWS.S3();
 
 export async function downloadAndUploadImage(
   imageUrl: string,
   bucketName: string,
-  key: string
+  s3Key: string
 ) {
   try {
-    // 下载图片
-    const response = await fetch(imageUrl);
-    const buffer = await response.arrayBuffer();
-
-    // 上传到 S3
-    const command = new PutObjectCommand({
-      Bucket: bucketName,
-      Key: key,
-      Body: Buffer.from(buffer),
-      ContentType: 'image/png'
+    const response = await axios({
+      method: "GET",
+      url: imageUrl,
+      responseType: "stream",
     });
 
-    const result = await s3Client.send(command);
-    
-    // 返回图片URL
-    return {
-      Location: `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`,
-      ...result
+    const uploadParams = {
+      Bucket: bucketName,
+      Key: s3Key,
+      Body: response.data as Readable,
     };
-  } catch (error) {
-    console.error('Error uploading to S3:', error);
-    throw error;
+
+    return s3.upload(uploadParams).promise();
+  } catch (e) {
+    console.log("upload failed:", e);
+    throw e;
   }
 }
 
 export async function downloadImage(imageUrl: string, outputPath: string) {
   try {
-    const response = await fetch(imageUrl);
-    const buffer = await response.arrayBuffer();
-    
-    // 如果需要保存到文件系统
-    const fs = require('fs');
-    fs.writeFileSync(outputPath, Buffer.from(buffer));
-    
-    return outputPath;
-  } catch (error) {
-    console.error('Error downloading image:', error);
-    throw error;
+    const response = await axios({
+      method: "GET",
+      url: imageUrl,
+      responseType: "stream",
+    });
+
+    return new Promise((resolve, reject) => {
+      const writer = fs.createWriteStream(outputPath);
+      response.data.pipe(writer);
+
+      let error: Error | null = null;
+      writer.on("error", (err) => {
+        error = err;
+        writer.close();
+        reject(err);
+      });
+
+      writer.on("close", () => {
+        if (!error) {
+          resolve(null);
+        }
+      });
+    });
+  } catch (e) {
+    console.log("upload failed:", e);
+    throw e;
   }
 }

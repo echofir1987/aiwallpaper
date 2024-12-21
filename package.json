@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.715.0",
+    "@aws-sdk/client-s3": "^3.0.0",
     "@clerk/nextjs": "^6.9.5",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.0",
@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@shadcn/ui": "^0.0.4",
+    "@types/aws-sdk": "^2.7.4",
     "@types/node": "^20",
     "@types/node-fetch": "^2.6.12",
     "@types/pg": "^8.11.10",

@@ -31,10 +31,11 @@ export default function ({ setWallpapers }: Props) {
         const data = await result.json();
         setLoading(false);
 
-        if (data) {
+        if (data && data.code === 0) {
             console.log("new wallpaper", data);
             const wallpaperWithUser = {
                 ...data.data,
+                id: Date.now(),
                 user_avatar: user?.imageUrl,  
                 user_nickname: user?.username
             };
