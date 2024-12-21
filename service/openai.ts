@@ -1,19 +1,19 @@
 import OpenAI from 'openai';
-import type { Fetch } from 'openai/core';
-import fetch from 'node-fetch';
-import { HttpsProxyAgent } from 'https-proxy-agent';
+// import type { Fetch } from 'openai/core';
+// import fetch from 'node-fetch';
+// import { HttpsProxyAgent } from 'https-proxy-agent';
 
 export function getOpenAIClient() {
-    const agent = new HttpsProxyAgent('http://127.0.0.1:7890');
-    
-    const fetchWithProxy = (url: string, init?: any) => {
-        return fetch(url, { ...init, agent });
-    };
-
+    // const agent = new HttpsProxyAgent('http://127.0.0.1:7890');
+    // 
+    // const fetchWithProxy = (url: string, init?: any) => {
+    //     return fetch(url, { ...init, agent });
+    // };
+    // 
     return new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
         timeout: 120000,
         baseURL: "https://api.openai.com/v1",
-        fetch: fetchWithProxy as unknown as Fetch,
+        // fetch: fetchWithProxy as unknown as Fetch,
     });
 } 
