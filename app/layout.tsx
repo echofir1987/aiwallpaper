@@ -25,26 +25,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body>
-          <SignedOut>
-            <div className="fixed top-4 right-4 z-50">
-              <SignInButton>
-                <Button>
-                  登录
-                </Button>
-              </SignInButton>
-            </div>
-            <div>
-              {children}
-            </div>
-          </SignedOut>
-          <SignedIn>
-            <div className="fixed top-4 right-4 z-50">
-              <UserButton />
-            </div>
-            <div>
-              {children}
-            </div>
-          </SignedIn>
+          {children}
         </body>
       </html>
     </ClerkProvider>
