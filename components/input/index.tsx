@@ -35,9 +35,7 @@ export default function ({ setWallpapers }: Props) {
             console.log("new wallpaper", data);
             const wallpaperWithUser = {
                 ...data.data,
-                id: Date.now(),
-                user_avatar: user?.imageUrl,  
-                user_nickname: user?.username
+                id: Date.now()
             };
             setWallpapers((wallpapers: Wallpaper[]) => [wallpaperWithUser, ...wallpapers]);
         }
