@@ -34,15 +34,15 @@ export default function() {
                             </Link>
                         </div>
                         <div className="flex items-center gap-4 z-50">
-                            <Link href="/pricing">
-                                <Button variant="outline">credits:{credits}</Button>
-                            </Link>
                             <SignedOut>
                                 <SignInButton>
                                     <Button>登录</Button>
                                 </SignInButton>
                             </SignedOut>
                             <SignedIn>
+                                <Link href="/pricing">
+                                    <Button variant="outline">积分：{credits}</Button>
+                                </Link>
                                 <UserButton afterSignOutUrl="/"/>
                             </SignedIn>
                         </div>
