@@ -42,16 +42,26 @@ export default function ({ setWallpapers }: Props) {
     }
 
     const handleGenerateWallpaper = async function () {
-        console.log("handleGenerateWallpaper", description);
         if (!description) {
-            alert("请输入壁纸的主题")
+            alert("请输入壁纸的主题");
             return;
         }
         if (!user || !user.emailAddresses || user.emailAddresses.length === 0) {
-            alert("请登录后生成壁纸")
+            alert("请登录后生成壁纸");
             return;
         }
-        await generateWallpaper()
+
+        // 检查用户积分
+        const response = await fetch("/api/get-user-info", {
+            method: "POST"
+        });
+        const { data } = await response.json();
+        if (data.credits.left_credits <= 0) {
+            alert("积分不足，请充值");
+            return;
+        }
+
+        await generateWallpaper();
     };
 
     return (

@@ -6,7 +6,7 @@ import { insertWallpaper } from '@/models/wallpaper';
 import { currentUser } from "@clerk/nextjs";
 import { User } from "@/types/user";
 import { saveUser } from "@/service/user";
-
+import { getUserCredits } from "@/service/order";
 export async function POST(request: Request) {
     const { description } = await request.json();
     if(!description) {
@@ -63,6 +63,15 @@ export async function POST(request: Request) {
     console.log('gen wallpaper success', img_url);
 
     const user_email = user.emailAddresses[0].emailAddress;
+    const credits = await getUserCredits(user_email);   
+    console.log("credits", credits);
+    if(credits.left_credits <= 0) {
+        return Response.json({
+            code: -1,
+            msg: "credits not enough",
+        });
+    }
+
     const user_avatar = user.imageUrl;
     const user_nickname = user.firstName;
     const userInfo: User = {
