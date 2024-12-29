@@ -65,19 +65,17 @@ export default function ({ setWallpapers }: Props) {
     };
 
     return (
-        <div className="flex justify-center w-full mt-10">
-            <div className="flex justify-center items-center max-w-3xl w-full px-10">
-                <div className="flex w-full max-w-3xl gap-2.5">
-                    <Input 
-                        type="text" 
-                        placeholder="请输入壁纸的主题" 
-                        className="flex-1"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        disabled={loading}
-                    />
-                    <Button onClick={handleGenerateWallpaper} disabled={loading}>{ loading ? "生成中..." : "生成壁纸"}</Button>
-                </div>
+        <div className="mx-auto w-full max-w-7xl px-5 pt-5 md:pt-10">
+            <div className="flex w-full sm:w-[600px] mx-auto gap-2.5">
+                <Input 
+                    type="text" 
+                    placeholder="请输入壁纸的主题" 
+                    className="flex-1"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    disabled={loading}
+                />
+                <Button onClick={handleGenerateWallpaper} disabled={loading}>{ loading ? "生成中..." : "生成壁纸"}</Button>
             </div>
         </div>
     )

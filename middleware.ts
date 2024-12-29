@@ -5,7 +5,9 @@ export default authMiddleware({
   publicRoutes: [
     "/", 
     "/api/webhook",
-    "/api/get-wallpaper"
+    "/api/get-wallpaper",
+    "/api/get-user-info",
+    "/_next/image"
   ],
   
   async afterAuth(auth, req) {

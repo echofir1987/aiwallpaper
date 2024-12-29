@@ -26,11 +26,12 @@ export default function() {
     return (
         <div>
             <section>
-                <nav className="font-inter mx-auto h-auto w-full max-w-screen-2xl lg:relative lg:top-0">
-                    <div className="flex items-center justify-between px-6 py-6 lg:px-10 lg:py-4 xl:px-20">
+                <nav className="mx-auto w-full max-w-7xl">
+                    <div className="flex items-center justify-between px-5 py-6 md:px-10 md:py-4">
                         <div className="flex items-center gap-6">
-                            <Link href="/" className="flex items-center">
-                                <img src="/logo.svg" alt="AIwallpaper Logo" className="h-32 w-auto" />
+                            <Link href="/" className="flex items-center gap-2">
+                                <img src="/logo.svg" alt="AIwallpaper Logo" className="h-[38px] w-auto" />
+                                <span className="text-xl font-bold text-primary">灵言壁境</span>
                             </Link>
                         </div>
                         <div className="flex items-center gap-4 z-50">

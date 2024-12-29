@@ -11,7 +11,7 @@ interface Props {
 
 export default function Wallpaper({ wallpapers }: Props) {
   return (
-    <section className="mx-auto w-full max-w-7xl px-5 py-16 md:px-10 md:py-10">
+    <section className="mx-auto w-full max-w-7xl px-5 py-5 md:px-10 md:py-10">
       <div className="mb-12 grid grid-cols-1 gap-5 sm:grid-cols-2 md:mb-16 md:grid-cols-3 md:gap-4">
         {wallpapers?.map((wallpaper: Wallpaper) => (
           <div
@@ -46,8 +46,7 @@ export default function Wallpaper({ wallpapers }: Props) {
               alt={''}
               width={1792}
               height={1024}
-              priority={false}
-              loading="lazy"
+              priority={true}
               className="inline-block h-60 w-full rounded-md object-cover"
             />
           </div>
