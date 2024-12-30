@@ -1,0 +1,4 @@
+rules:
+    - 'DOMAIN-SUFFIX,azurewebsites.net,龙猫云 - TotoroCloud'
+    - 'DOMAIN-SUFFIX,bewildcard.com,龙猫云 - TotoroCloud'
+    - 'DOMAIN-SUFFIX,bing.com,龙猫云 - TotoroCloud' 

@@ -7,16 +7,17 @@ import { Button } from "@/components/ui/button"
 import { useState, Dispatch, SetStateAction } from "react"
 import { Wallpaper } from "@/types/wallpaper";
 import { useUser } from "@clerk/nextjs";
+import { PricingModal } from "../pricing/PricingModal";
 
 interface Props {
-    setWallpapers: Dispatch<SetStateAction<Wallpaper[]>>;
+    setWallpapers: (wallpapers: Wallpaper[] | ((wallpapers: Wallpaper[]) => Wallpaper[])) => void;
 }
 
 export default function ({ setWallpapers }: Props) {
     const { user } = useUser();
     const [description, setDescription] = useState("");
     const [loading, setLoading] = useState(false);
-    // const [wallpaper, setWallpaper] = useState<Wallpaper | null>(null);
+    const [showPricingModal, setShowPricingModal] = useState(false);
 
     const generateWallpaper = async function () {
         const params = {
@@ -57,7 +58,8 @@ export default function ({ setWallpapers }: Props) {
         });
         const { data } = await response.json();
         if (data.credits.left_credits <= 0) {
-            alert("积分不足，请充值");
+            // 打开付费弹窗而不是显示提示
+            setShowPricingModal(true);
             return;
         }
 
@@ -77,6 +79,10 @@ export default function ({ setWallpapers }: Props) {
                 />
                 <Button onClick={handleGenerateWallpaper} disabled={loading}>{ loading ? "生成中..." : "生成壁纸"}</Button>
             </div>
+            <PricingModal 
+                isOpen={showPricingModal} 
+                onClose={() => setShowPricingModal(false)} 
+            />
         </div>
     )
 }

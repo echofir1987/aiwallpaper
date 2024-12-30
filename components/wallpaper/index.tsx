@@ -7,9 +7,12 @@ import Image from 'next/image';
 
 interface Props {
   wallpapers: Wallpaper[];
+  loading: boolean;
+  hasMore: boolean;
+  onLoadMore: () => void;
 }
 
-export default function Wallpaper({ wallpapers }: Props) {
+export default function Wallpaper({ wallpapers, loading, hasMore, onLoadMore }: Props) {
   return (
     <section className="mx-auto w-full max-w-7xl px-5 py-5 md:px-10 md:py-10">
       <div className="mb-12 grid grid-cols-1 gap-5 sm:grid-cols-2 md:mb-16 md:grid-cols-3 md:gap-4">
@@ -52,9 +55,16 @@ export default function Wallpaper({ wallpapers }: Props) {
           </div>
         ))}
       </div>
-      <div className="w-full flex justify-center">
-        <Button>查看更多</Button>
-      </div>
+      {hasMore && (
+        <div className="w-full flex justify-center">
+          <Button 
+            onClick={onLoadMore}
+            disabled={loading}
+          >
+            {loading ? '加载中...' : '查看更多'}
+          </Button>
+        </div>
+      )}
     </section>
   );
 }

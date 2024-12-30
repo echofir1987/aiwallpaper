@@ -4,9 +4,11 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link'
 import { useEffect, useState } from "react";
+import { PricingModal } from '../pricing/PricingModal';
 
 export default function() {
     const [credits, setCredits] = useState(0);
+    const [showPricingModal, setShowPricingModal] = useState(false);
 
     const fetchUserInfo = async () => {
         const response = await fetch("/api/get-user-info",{
@@ -41,15 +43,23 @@ export default function() {
                                 </SignInButton>
                             </SignedOut>
                             <SignedIn>
-                                <Link href="/pricing">
-                                    <Button variant="outline">积分：{credits}</Button>
-                                </Link>
+                                <Button 
+                                    variant="outline" 
+                                    onClick={() => setShowPricingModal(true)}
+                                    className="flex items-center gap-2"
+                                >
+                                    <span>积分：{credits}</span>
+                                </Button>
                                 <UserButton afterSignOutUrl="/"/>
                             </SignedIn>
                         </div>
                     </div>
                 </nav>
             </section>
+            <PricingModal 
+                isOpen={showPricingModal} 
+                onClose={() => setShowPricingModal(false)} 
+            />
         </div>
     )
 }
